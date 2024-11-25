@@ -29,11 +29,14 @@ require("lazy").setup({
   -- it should be installed before lspconfig
   { 'folke/neodev.nvim', opts = {} },
 
-  -- Jumping to anywhere
+  -- Jumping to anywhere by two characters
   { 'ggandor/leap.nvim' },
   { 'tpope/vim-repeat' },
+
+  -- Jumping to anywhere
   { 'phaazon/hop.nvim',  version = "v2" },
 
+  -- Dim inactive window
   { 'levouh/tint.nvim' },
 
   {
