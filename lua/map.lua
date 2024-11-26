@@ -88,3 +88,15 @@ keymap.set('n', '<leader>ca', ':CodeActionMenu<cr>')
 -- Open/close resolve conflict windows
 keymap.set('n', '<leader>dv', ':DiffviewOpen<cr>')
 keymap.set('n', '<leader>dvv', ':DiffviewClose<cr>')
+
+-- copy to clipboard
+keymap.set('v', '<leader>y', '"+y')
+keymap.set('n', '<leader>Y', '"+yg_')
+keymap.set('n', '<leader>y', '"+y')
+keymap.set('n', '<leader>yy', '"+yy')
+
+-- paste from clipboard
+keymap.set('n', '<leader>p', '"+p')
+keymap.set('n', '<leader>P', '"+P')
+keymap.set('v', '<leader>p', '"+p')
+keymap.set('v', '<leader>p', '"+P')

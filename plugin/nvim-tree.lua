@@ -36,6 +36,14 @@ local function on_attach(bufnr)
   vim.keymap.set('n', 'x',     api.fs.cut,                            opts('Cut'))
   vim.keymap.set('n', 'y',     api.fs.copy.filename,                  opts('Copy Name'))
   vim.keymap.set('n', 'Y',     api.fs.copy.relative_path,             opts('Copy Relative Path'))
+
+  vim.keymap.set('n', ';fid', function()
+    api.fs.copy.relative_path()
+    local path = vim.fn.getreg('"')
+    local command = ':Telescope live_grep search_dirs=./' .. path .. '\r'
+    vim.fn.feedkeys(command, 'n')
+  end, opts('Copy Path and Search in Telescope'))
+
   -- END_DEFAULT_ON_ATTACH
 
 
