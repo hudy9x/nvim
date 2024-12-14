@@ -100,3 +100,11 @@ keymap.set('n', '<leader>p', '"+p')
 keymap.set('n', '<leader>P', '"+P')
 keymap.set('v', '<leader>p', '"+p')
 keymap.set('v', '<leader>p', '"+P')
+
+-- start macro and save it to 'h'
+keymap.set('n', '<leader>sm', 'qh')
+-- apply macro immediately
+keymap.set('n', '<leader>amn', ':norm! @h<cr>')
+-- open apply macro input, not run it
+keymap.set('n', '<leader>am', ':norm! @h')
+
