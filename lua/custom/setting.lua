@@ -4,6 +4,26 @@ vim.g.maplocalleader = ' '
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = false
 
+-- Enable line number and relative line number
+vim.opt.nu = true
+vim.opt.rnu = true
+
+-- Set default indent to 2
+vim.opt.shiftwidth = 2
+vim.opt.tabstop = 2
+--- Using space instead tab
+vim.opt.expandtab = true
+
+--- Using tab instead space
+---vim.opt.noexpandtab = true
+
+-- For smart indenting
+vim.opt.ai = true
+vim.opt.si = true
+
+-- Auto break line when reach to window's border
+vim.opt.wrap = true
+
 -- [[ Setting options ]]
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
@@ -76,3 +96,4 @@ vim.o.scrolloff = 10
 -- instead raise a dialog asking if you wish to save the current file(s)
 -- See `:help 'confirm'`
 vim.o.confirm = true
+
