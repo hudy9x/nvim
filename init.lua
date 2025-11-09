@@ -103,6 +103,9 @@ require('lazy').setup({
   -- LSP Configuration
   require 'kickstart.plugins.lspconfig',
 
+  -- Typescript format, completion
+  require 'kickstart.plugins.typescript_tools',
+
   -- Code format
   require 'kickstart.plugins.conform',
 
