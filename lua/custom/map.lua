@@ -5,6 +5,9 @@ keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 keymap.set('n', '<C-s>', ':w<cr>')
 keymap.set('i', '<C-s>', '<esc>:w<cr>')
 vim.keymap.set('n', '<leader>e', ':Neotree toggle<CR>', { desc = 'Explorer (Neo-tree)', silent = true })
+vim.keymap.set('n', '<leader>ff', function()
+  vim.cmd('Neotree reveal')
+end, { desc = 'Neo-tree: reveal current file', silent = true })
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
@@ -76,3 +79,4 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.hl.on_yank()
   end,
 })
+
