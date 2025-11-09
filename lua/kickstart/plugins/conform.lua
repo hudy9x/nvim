@@ -7,11 +7,11 @@ return { -- Autoformat
       '<leader>fm',
       function()
         local ft = vim.bo.filetype
-        if ft == 'typescript' or ft == 'typescriptreact' or ft == 'javascript' or ft == 'javascriptreact' then
-          vim.lsp.buf.format { async = true, filter = function(client) return client.name == 'typescript-tools' end }
-        else
+        -- if ft == 'typescript' or ft == 'typescriptreact' or ft == 'javascript' or ft == 'javascriptreact' then
+        --   vim.lsp.buf.format { async = true, filter = function(client) return client.name == 'ts_ls' end }
+        -- else
           require('conform').format { async = true, lsp_format = 'fallback' }
-        end
+        -- end
       end,
       mode = '',
       desc = '[F]ormat buffer',

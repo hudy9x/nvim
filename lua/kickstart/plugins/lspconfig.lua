@@ -202,10 +202,8 @@ return {
       -- rust_analyzer = {},
       -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
       --
-      -- Note: TypeScript is handled by `pmizio/typescript-tools.nvim` in this config.
-      -- We intentionally omit `ts_ls` here so `typescript-tools` provides formatting
-      -- and other TypeScript-specific features without conflicting with tsserver LSP.
-      -- ts_ls = {},
+      -- Use `ts_ls` for TypeScript support instead of typescript-tools
+      ts_ls = {},
 
       lua_ls = {
         -- cmd = { ... },
