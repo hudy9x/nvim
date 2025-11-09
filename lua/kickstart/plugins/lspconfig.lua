@@ -83,6 +83,7 @@ return {
         map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
         -- Fuzzy find all the symbols in your current document.
+
         --  Symbols are things like variables, functions, types, etc.
         map('gO', require('telescope.builtin').lsp_document_symbols, 'Open Document Symbols')
 
@@ -183,6 +184,7 @@ return {
     --  When you add blink.cmp, luasnip, etc. Neovim now has *more* capabilities.
     --  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
     local capabilities = require('blink.cmp').get_lsp_capabilities()
+
 
     -- Enable the following language servers
     --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
