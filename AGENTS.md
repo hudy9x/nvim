@@ -10,15 +10,17 @@ Build / lint / test (local)
 
 Style guidelines
 - Formatting: rely on `stylua` (2-space indent, configured via .stylua.toml).
-- Imports: `local mod = require('module')`; require only at top-level or lazily via `pcall(require, ...)`.
-- File/module names: use `snake_case` for `lua/` filenames and module paths.
+- Imports: `local mod = require('module')`; prefer top-level requires or lazy `pcall(require, ...)`.
+- File/module names: use `snake_case` for `lua/` filenames and module paths; keep `lua/custom/*.lua` for user splits.
 - Locals/functions: prefer `camelCase` for local variables and functions; use `PascalCase` only for module/table constructors.
-- Constants: `UPPER_SNAKE` for global/constant values (rare in config).
-- Types/annotations: use EmmyLua annotations (`---@param`, `---@return`, `---@type`) for public APIs and complex functions.
-- Error handling: prefer `pcall` for optional requires; validate return values and propagate errors with clear messages; check `vim.v.shell_error` after shell calls.
+- Types/annotations: use EmmyLua (`---@param`, `---@return`, `---@type`) for public APIs.
+- Error handling: prefer `pcall` for optional requires; validate returns and check `vim.v.shell_error` after shell calls.
+
+Notes for agents
+- Keymaps and settings are modularized: `lua/custom/map.lua` and `lua/custom/setting.lua` exist.
+  - Load them from `init.lua` with `require('custom.map')` and `require('custom.setting')`.
+  - Keep mapping-only logic in `map.lua` and option-only logic in `setting.lua`.
 
 CI / rules
 - There is a GitHub action for `stylua` at `.github/workflows/stylua.yml`.
 - No Cursor rules or Copilot instructions detected in this repo; none included.
-
-Keep edits minimal and follow existing patterns in `init.lua` and `lua/` modules.
