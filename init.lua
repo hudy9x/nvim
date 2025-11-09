@@ -1,7 +1,8 @@
 require 'custom.setting'
 require 'custom.map'
 -- Custom LSP overrides (floating borders, hover mapping)
-pcall(require, 'custom.lsp_overrides')
+pcall(require, 'custom.lsp_hover')
+pcall(require, 'custom.dim_unused')
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info

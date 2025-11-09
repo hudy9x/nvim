@@ -1,5 +1,9 @@
--- Custom LSP overrides: safe monkeypatch for floating previews and hover mapping
-if vim.g._user_lsp_overrides_done then
+-- lsp_hover: set rounded border for LSP floating previews and provide hover mappings
+-- Purpose: Ensure LSP hover/floating-preview windows use a consistent rounded border
+-- and set a buffer-local `K` mapping to show hover information when an LSP attaches.
+-- This file intentionally runs for side-effects when required (no return value needed).
+
+if vim.g._user_lsp_hover_done then
   return
 end
 
@@ -16,7 +20,7 @@ if vim.lsp and vim.lsp.util and vim.lsp.util.open_floating_preview then
 end
 
 -- Buffer-local mapping for hover on 'K' when LSP attaches
-local aug = vim.api.nvim_create_augroup('user_lsp_overrides', { clear = true })
+local aug = vim.api.nvim_create_augroup('user_lsp_hover', { clear = true })
 vim.api.nvim_create_autocmd('LspAttach', {
   group = aug,
   callback = function(ev)
@@ -28,9 +32,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 -- Global fallback mapping for 'K' to call hover (works even if LspAttach didn't set buffer-local mapping)
--- This avoids cases where the buffer-local mapping isn't present but LSP hover is available.
 vim.keymap.set('n', 'K', function()
   pcall(vim.lsp.buf.hover)
 end, { desc = 'LSP: Hover (global fallback)' })
 
-vim.g._user_lsp_overrides_done = true
+vim.g._user_lsp_hover_done = true
