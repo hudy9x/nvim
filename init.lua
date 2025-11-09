@@ -16,6 +16,12 @@ end
 local rtp = vim.opt.rtp
 rtp:prepend(lazypath)
 
+-- If nvim-web-devicons was manually cloned into the lazy directory, add it to runtimepath so it can be required
+local devicons_path = vim.fn.stdpath 'data' .. '/lazy/nvim-web-devicons'
+if (vim.uv or vim.loop).fs_stat(devicons_path) then
+  vim.o.runtimepath = vim.o.runtimepath .. ',' .. devicons_path
+end
+
 -- [[ Configure and install plugins ]]
 --
 --  To check the current status of your plugins, run
@@ -68,7 +74,23 @@ require('lazy').setup({
   },
 
   -- Icons
-  { 'nvim-tree/nvim-web-devicons', opts = {} },
+  {
+    'nvim-tree/nvim-web-devicons',
+    opts = {
+      override = { zsh = { icon = '', color = '#428850', cterm_color = '65', name = 'Zsh' } },
+      color_icons = true,
+      default = true,
+      strict = true,
+      variant = 'light|dark',
+      blend = 0,
+      override_by_filename = { ['.gitignore'] = { icon = '', color = '#f1502f', name = 'Gitignore' } },
+      override_by_extension = { log = { icon = '', color = '#81e043', name = 'Log' } },
+      override_by_operating_system = { apple = { icon = '', color = '#A2AAAD', cterm_color = '248', name = 'Apple' } },
+    },
+    config = function(_, opts)
+      require('nvim-web-devicons').setup(opts)
+    end,
+  },
 
   -- Terminal
   require 'kickstart.plugins.toggleterm',
@@ -141,7 +163,8 @@ require('lazy').setup({
 
   require 'kickstart.plugins.bufferline',
 
-  require 'themes.tokyonight',
+  -- require 'themes.tokyonight',
+  require 'themes.catppuccin',
 
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
@@ -232,6 +255,12 @@ require('lazy').setup({
     },
   },
 })
+
+-- Ensure nvim-web-devicons runtime path is present (in case it was cloned manually)
+local devicons_path = vim.fn.stdpath 'data' .. '/lazy/nvim-web-devicons'
+if (vim.uv or vim.loop).fs_stat(devicons_path) then
+  vim.o.runtimepath = vim.o.runtimepath .. ',' .. devicons_path
+end
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
