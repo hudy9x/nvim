@@ -57,8 +57,8 @@ require('lazy').setup({
     'lewis6991/gitsigns.nvim',
     opts = {
       signs = {
-        add = { text = '+' },
-        change = { text = '~' },
+        add = { text = '┃' },
+        change = { text = '┃' },
         delete = { text = '_' },
         topdelete = { text = '‾' },
         changedelete = { text = '~' },
@@ -134,6 +134,8 @@ require('lazy').setup({
   },
 
   require 'kickstart.plugins.blink',
+
+  require 'kickstart.plugins.bufferline',
 
   require 'themes.tokyonight',
 
