@@ -38,7 +38,8 @@ local function open_folder_prompt(mode)
   local row = math.floor((vim.o.lines - height) / 2 - 1)
   local col = math.floor((vim.o.columns - width) / 2)
   local cwd = vim.fn.getcwd()
-  local lines = { 'Folder: ' .. cwd, '', "<C-s>: suggestions | Enter: open | q: close" }
+  local title = (mode == 'live_grep') and 'Live Grep in Folder' or 'Find Files in Folder'
+  local lines = { title, 'Folder: ' .. cwd, '', "<C-s>: suggestions | Enter: open | q: close" }
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
   local win = vim.api.nvim_open_win(buf, true, {
     relative = 'editor', row = row, col = col, width = width, height = height,
@@ -49,7 +50,7 @@ local function open_folder_prompt(mode)
   vim.bo[buf].filetype = 'TelescopeFolderSearch'
 
   local function get_folder()
-    local line = vim.api.nvim_buf_get_lines(buf, 0, 1, false)[1] or ''
+    local line = vim.api.nvim_buf_get_lines(buf, 1, 2, false)[1] or ''
     local folder = line:gsub('^Folder:%s*', '')
     if folder == '' then folder = cwd end
     return folder
@@ -81,9 +82,9 @@ local function open_folder_prompt(mode)
     vim.ui.select(dirs, { prompt = 'Select folder:' }, function(choice)
       if not choice then return end
       local new_line = 'Folder: ' .. choice
-      vim.api.nvim_buf_set_lines(buf, 0, 1, false, { new_line })
+      vim.api.nvim_buf_set_lines(buf, 1, 2, false, { new_line })
       local col = #new_line
-      vim.api.nvim_win_set_cursor(win, { 1, col })
+      vim.api.nvim_win_set_cursor(win, { 2, col })
       vim.cmd('startinsert')
     end)
   end
@@ -93,21 +94,22 @@ local function open_folder_prompt(mode)
   vim.keymap.set({ 'n', 'i' }, '<C-s>', function() show_suggestions() end, map_opts)
   vim.keymap.set({ 'n', 'i' }, '<CR>', function() run() end, map_opts)
   vim.keymap.set('n', 'q', function() close() end, map_opts)
+  vim.keymap.set('n', '<esc>', function() close() end, map_opts)
   vim.keymap.set('i', '<C-c>', function() close() end, map_opts)
   -- allow entering insert with 'i'
   vim.keymap.set('n', 'i', function()
-    local line = vim.api.nvim_buf_get_lines(buf, 0, 1, false)[1] or ''
-    vim.api.nvim_win_set_cursor(win, { 1, #line })
+    local line = vim.api.nvim_buf_get_lines(buf, 1, 2, false)[1] or ''
+    vim.api.nvim_win_set_cursor(win, { 2, #line })
     vim.cmd('startinsert')
   end, map_opts)
 
   -- position cursor at end of folder line in normal mode
-  local initial_col = #lines[1]
-  vim.api.nvim_win_set_cursor(win, { 1, initial_col })
+  local initial_col = #lines[2]
+  vim.api.nvim_win_set_cursor(win, { 2, initial_col })
 end
 
 -- keymaps
-vim.keymap.set('n', ';fif', function() open_folder_prompt('live_grep') end, { desc = 'Telescope: live_grep in folder' })
-vim.keymap.set('n', ';fiff', function() open_folder_prompt('find_files') end, { desc = 'Telescope: find_files in folder' })
+vim.keymap.set('n', '<leader>fg', function() open_folder_prompt('live_grep') end, { desc = 'Telescope: live_grep in folder' })
+vim.keymap.set('n', '<leader>ff', function() open_folder_prompt('find_files') end, { desc = 'Telescope: find_files in folder' })
 
 return M
