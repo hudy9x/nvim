@@ -209,6 +209,9 @@ require('lazy').setup({
   },
 })
 
+-- Load custom telescope folder search UI (keyword + folder)
+pcall(require, 'custom.plugins.telescope_folder_search')
+
 -- Ensure nvim-web-devicons runtime path is present (in case it was cloned manually)
 local devicons_path = vim.fn.stdpath 'data' .. '/lazy/nvim-web-devicons'
 if (vim.uv or vim.loop).fs_stat(devicons_path) then
