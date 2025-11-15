@@ -105,7 +105,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
           '.vercel',
         },
       }
-    end, { desc = 'Test: include .gitignore but exclude .git/node_modules' })
+    end, { desc = '[S]earch [F]iles' })
 
     -- Slightly advanced example of overriding default behavior and theme
     vim.keymap.set('n', '<leader>/', function()
