@@ -68,7 +68,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
     local builtin = require 'telescope.builtin'
     vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
     vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-    vim.keymap.set('n', ';f', builtin.find_files, { desc = '[S]earch [F]iles' })
+    -- vim.keymap.set('n', ';f', builtin.find_files, { desc = '[S]earch [F]iles' })
     vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
     vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
     vim.keymap.set('n', ';fg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
@@ -78,8 +78,34 @@ return { -- Fuzzy Finder (files, lsp, etc)
     vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
     -- Find files including those ignored by .gitignore
     vim.keymap.set('n', ';F', function()
-      builtin.find_files({ hidden = true, no_ignore = true, no_ignore_vcs = true })
+      builtin.find_files { hidden = true, no_ignore = true, no_ignore_vcs = true }
     end, { desc = '[S]earch [F]iles including .gitignore' })
+
+    -- Test keymap: include .gitignore but explicitly exclude some folders
+    vim.keymap.set('n', ';f', function()
+      builtin.find_files {
+        hidden = true,
+        no_ignore = true,
+        no_ignore_vcs = true,
+        -- Use fd to explicitly exclude certain directories
+        find_command = {
+          'fd',
+          '--type',
+          'f',
+          '--hidden',
+          '--follow',
+
+          '--exclude',
+          '.git',
+
+          '--exclude',
+          'node_modules',
+
+          '--exclude',
+          '.vercel',
+        },
+      }
+    end, { desc = 'Test: include .gitignore but exclude .git/node_modules' })
 
     -- Slightly advanced example of overriding default behavior and theme
     vim.keymap.set('n', '<leader>/', function()
@@ -103,7 +129,5 @@ return { -- Fuzzy Finder (files, lsp, etc)
     vim.keymap.set('n', '<leader>sn', function()
       builtin.find_files { cwd = vim.fn.stdpath 'config' }
     end, { desc = '[S]earch [N]eovim files' })
-
-
   end,
 }
