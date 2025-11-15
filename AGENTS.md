@@ -44,3 +44,44 @@ Adding plugins and themes
 CI / rules
 - There is a GitHub action for `stylua` at `.github/workflows/stylua.yml`.
 - No Cursor rules or Copilot instructions detected in this repo; none included.
+
+Telescope: updating excluded folders/files
+- File: `lua/kickstart/plugins/telescope.lua:79` (keymaps and find overrides)
+- To show files that are normally gitignored but still exclude specific folders, update the `find_command` used in the keymap that calls `builtin.find_files`.
+
+```
+
+    vim.keymap.set('n', ';f', function()
+      builtin.find_files {
+        hidden = true,
+        no_ignore = true,
+        no_ignore_vcs = true,
+        -- Use fd to explicitly exclude certain directories
+        find_command = {
+          'fd',
+          '--type',
+          'f',
+          '--hidden',
+          '--follow',
+
+          '--exclude',
+          '.git',
+
+          '--exclude',
+          'node_modules',
+
+          '--exclude',
+          '.vercel',
+
+          '--exclude',
+          '.next'
+        },
+      }
+    end, { desc = '[S]earch [F]iles' })
+```
+
+
+- Notes:
+  - `find_command` runs an external program directly (e.g. `fd` or `rg`) — ensure the program is installed.
+  - `--exclude` for `fd` or `--glob '!<path>/**'` for `rg` will hide those paths even when `no_ignore = true`.
+  - Restart Neovim or reload your config after changes and test the keymap (e.g. `;f` or `;F`).

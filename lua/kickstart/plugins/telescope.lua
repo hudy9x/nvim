@@ -103,6 +103,9 @@ return { -- Fuzzy Finder (files, lsp, etc)
 
           '--exclude',
           '.vercel',
+
+          '--exclude',
+          '.next'
         },
       }
     end, { desc = '[S]earch [F]iles' })
