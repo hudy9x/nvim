@@ -28,7 +28,9 @@ return {
       -- Mapping functions
       window = {
         mappings = {
-          ['\\'] = 'close_window'
+          ['\\'] = 'close_window',
+          -- disable `s` because it's used by user mappings (e.g. `sh`)
+          ['s'] = false,
         },
       },
     },
