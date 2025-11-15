@@ -22,7 +22,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
--- or just use <C-\><C-n> to exit terminal mode
+-- or just use <C-\\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- Keybinds to make split navigation easier.
@@ -59,7 +59,7 @@ keymap.set('n', 'sv', ':vsplit<cr><C-w>w')
 
 -- open toggle term
 keymap.set('n', '<leader>t', '<cmd>ToggleTerm<CR>')
-keymap.set('t', '<esc>', [[<C-\><C-n>:ToggleTerm<CR>]])
+keymap.set('t', '<esc>', [[<C-\\><C-n>:ToggleTerm<CR>]])
 
 -- Next/Prev tab page
 keymap.set('n', '<leader>l', ':BufferLineCycleNext<CR>')
@@ -69,5 +69,50 @@ keymap.set('n', '<leader>h', ':BufferLineCyclePrev<CR>')
 keymap.set('n', '<leader>ta', [[:tabedit<cr>:BufferLineCloseLeft<cr>:BufferLineCloseRight<cr>]])
 -- Keep current tab and close the others
 keymap.set('n', '<leader>to', [[:BufferLineCloseLeft<cr>:BufferLineCloseRight<cr>]])
+
+-- Close buffer and jump to neighbor buffers
+local function choose_and_close(direction)
+  local cur = vim.api.nvim_get_current_buf()
+  local bufs_info = vim.fn.getbufinfo({ buflisted = 1 })
+  local bufs = {}
+  for _, b in ipairs(bufs_info) do
+    local ok_ft, ft = pcall(vim.api.nvim_buf_get_option, b.bufnr, 'filetype')
+    local ok_bt, bt = pcall(vim.api.nvim_buf_get_option, b.bufnr, 'buftype')
+    if ok_ft and ok_bt and ft ~= 'neo-tree' and bt == '' then
+      table.insert(bufs, b.bufnr)
+    end
+  end
+  if #bufs == 0 then
+    vim.api.nvim_buf_delete(cur, { force = false })
+    return
+  end
+  local idx
+  for i, b in ipairs(bufs) do
+    if b == cur then
+      idx = i
+      break
+    end
+  end
+  if not idx then
+    -- current buffer not in filtered list; just delete it
+    vim.api.nvim_buf_delete(cur, { force = false })
+    return
+  end
+  local target
+  if direction == 'prev' then
+    local t_idx = idx - 1
+    if t_idx < 1 then t_idx = #bufs end
+    target = bufs[t_idx]
+  else
+    local t_idx = idx + 1
+    if t_idx > #bufs then t_idx = 1 end
+    target = bufs[t_idx]
+  end
+  vim.api.nvim_set_current_buf(target)
+  vim.api.nvim_buf_delete(cur, { force = false })
+end
+
+keymap.set('n', '<leader>qq', function() choose_and_close('prev') end, { desc = 'Close buffer and go to previous' })
+keymap.set('n', '<leader>qQ', function() choose_and_close('next') end, { desc = 'Close buffer and go to next' })
 
 keymap.set('n', '<leader>jf', ':Neotree reveal<cr>')
