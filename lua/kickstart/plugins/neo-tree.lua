@@ -16,6 +16,16 @@ return {
   opts = {
     window = { position = 'right' },
     filesystem = {
+      -- Display hidden folders/files
+      filtered_items = {
+        visible = true,
+        hide_dotfiles = false,
+        hide_gitignored = false,
+        hide_by_name = { ".git", "node_modules" },
+        never_show = { ".DS_Store" }
+      },
+
+      -- Mapping functions
       window = {
         mappings = {
           ['\\'] = 'close_window',
